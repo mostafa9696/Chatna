@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mostafahussien.chatna.SettingsActivity"
+    android:orientation="vertical"
+    android:background="@drawable/layout_background"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="10dp"
+        android:id="@+id/profile_image"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/profileimage"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#FF000000"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:layout_gravity="center_horizontal"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="#262424"
+        android:id="@+id/text_user_name"
+        />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello I am using Chatna App"
+        android:layout_gravity="center_horizontal"
+        android:textSize="18sp"
+        android:textColor="#262424"
+        android:id="@+id/text_user_status"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Change Image"
+        android:layout_marginTop="120dp"
+        android:background="#6f998d"
+        android:padding="10dp"
+        android:id="@+id/change_image"
+        android:onClick="changeImage"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Edit Profile"
+        android:layout_marginTop="10dp"
+        android:background="#d47b27"
+        android:padding="10dp"
+        android:id="@+id/change_status"
+        android:onClick="editProfile"
+        />
+</LinearLayout>

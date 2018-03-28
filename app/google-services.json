@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "890437469919",
+    "firebase_url": "https://chatna-a5b01.firebaseio.com",
+    "project_id": "chatna-a5b01",
+    "storage_bucket": "chatna-a5b01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890437469919:android:693f7125fb038b9a",
+        "android_client_info": {
+          "package_name": "com.example.mostafahussien.chatna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890437469919-rj9os9mfjl4u5cfhkmeu8vt4a1ncskt2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mostafahussien.chatna",
+            "certificate_hash": "9656a52f9148867e0d9951bed6a7211e912a1d47"
+          }
+        },
+        {
+          "client_id": "890437469919-q51fbc0dfg1dfsr0qlafkqd3n1k6ab5f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Bt4XVMNrc3R3o8N4gn5PTIVttZG5sNU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890437469919-q51fbc0dfg1dfsr0qlafkqd3n1k6ab5f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
