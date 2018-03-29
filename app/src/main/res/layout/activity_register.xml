@@ -6,21 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.mostafahussien.chatna.RegisterActivity"
     android:orientation="vertical"
-    android:background="@drawable/interview"
+    android:background="@drawable/layout_background"
     >
-    <include
-        layout="@layout/app_bar_layout"
-        android:id="@+id/register_toolbar"
-        />
+
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_layout"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
         >
     <EditText
         android:id="@+id/user_name"
@@ -29,15 +26,18 @@
     android:hint="User Name"
     android:textColor="#333538"
     android:textColorHint="@color/colorPrimaryDark"
+        android:background="#00000000"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_user"
         />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/edittext_layout"
         >
     <EditText
@@ -47,6 +47,10 @@
         android:id="@+id/user_Email"
         android:textColor="#333538"
         android:textColorHint="@color/colorPrimaryDark"
+        android:inputType="textEmailAddress"
+        android:background="#00000000"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_email"
         />
     </android.support.design.widget.TextInputLayout>
     <LinearLayout
@@ -54,22 +58,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/edittext_layout"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        >
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gender"
-            android:textSize="25sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:padding="10dp"
-            android:textColor="#000754"
-            android:textStyle="italic"
-            />
+        >
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_gender"
+        android:layout_marginLeft="6dp"
+        />
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,8 +76,7 @@
         android:layout_marginTop="5dp"
         android:id="@+id/gender"
         android:orientation="horizontal"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="7dp"
         android:padding="10dp"
         >
         <RadioButton
@@ -106,11 +104,10 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true"
         android:background="@drawable/edittext_layout"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
         >
     <EditText
         android:layout_marginTop="5dp"
@@ -118,20 +115,19 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:id="@+id/user_password"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:padding="10dp"
         android:inputType="textPassword"
+        android:background="#00000000"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_password"
         />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true"
         android:background="@drawable/edittext_layout"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
         >
     <EditText
         android:layout_marginTop="5dp"
@@ -139,22 +135,25 @@
         android:layout_height="wrap_content"
         android:hint="Confirm Password"
         android:id="@+id/user_confirm_password"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:drawableLeft="@drawable/ic_password"
+        android:background="#00000000"
         android:padding="10dp"
         android:inputType="textPassword"
         />
     </android.support.design.widget.TextInputLayout>
     <Button
-        android:layout_marginTop="35dp"
-        android:layout_width="140dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Register"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_gravity="center_horizontal"
         android:padding="10dp"
         android:onClick="register"
         android:background="@drawable/button_layout"
         android:textColor="#14ae4c"
+        android:id="@+id/register"
         />
     <com.wang.avi.AVLoadingIndicatorView
         android:layout_width="wrap_content"

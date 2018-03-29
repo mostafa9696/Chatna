@@ -1,6 +1,7 @@
 package com.example.mostafahussien.chatna;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,25 +21,27 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.wang.avi.AVLoadingIndicatorView;
 
 public class LogInActivity extends AppCompatActivity {
-    Button register;
+    LinearLayout registerLayout;
     Button logIn;
-    private Toolbar toolbar;
     String mail,password;
     private EditText userMail,userPass;
     private AVLoadingIndicatorView indicatorView;
     private FirebaseAuth auth;
+    private TextView appName;
+    private Typeface typeface;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        register=(Button)findViewById(R.id.register);
+        registerLayout=(LinearLayout) findViewById(R.id.register_layout);
         logIn=(Button)findViewById(R.id.login);
         userMail=(EditText)findViewById(R.id.user_login_mail);
         userPass=(EditText)findViewById(R.id.user_login_password);
-        toolbar=(Toolbar)findViewById(R.id.register_toolbar);
+        appName=(TextView)findViewById(R.id.tv_app_name);
         indicatorView= (AVLoadingIndicatorView) findViewById(R.id.progress);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Login Into Account");
+        typeface=Typeface.createFromAsset(getAssets(),"Kurale-Regular.ttf");
+        appName.setTypeface(typeface);
+
         auth= FirebaseAuth.getInstance();
     }
 

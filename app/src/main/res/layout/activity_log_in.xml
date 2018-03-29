@@ -3,21 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context="com.example.mostafahussien.chatna.LogInActivity"
     android:orientation="vertical"
+    android:background="@drawable/layout_background"
     >
-    <include
-        layout="@layout/app_bar_layout"
-        android:id="@+id/register_toolbar"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chatna"
+        android:textSize="60sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:id="@+id/tv_app_name"
         />
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#77b68e8e"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="100dp"
+        android:background="@drawable/edittext_layout"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+
         >
         <EditText
             android:layout_width="match_parent"
@@ -25,15 +34,18 @@
             android:hint="E-Mail"
             android:id="@+id/user_login_mail"
             android:inputType="textEmailAddress"
+            android:background="#00000000"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/ic_user"
             />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true"
-        android:background="#77b68e8e"
-        android:layout_margin="10dp"
-
+        android:background="@drawable/edittext_layout"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         >
         <EditText
             android:layout_marginTop="5dp"
@@ -42,33 +54,100 @@
             android:hint="Password"
             android:id="@+id/user_login_password"
             android:inputType="textPassword"
+            android:drawableLeft="@drawable/ic_password"
+            android:background="#00000000"
+            android:padding="10dp"
+
             />
     </android.support.design.widget.TextInputLayout>
-    <Button
-        android:layout_marginTop="15dp"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LogIn"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dp"
-        android:onClick="login"
-        android:id="@+id/login"
+        android:text="Forget Password ?"
+        android:textSize="17sp"
+        android:layout_marginTop="5dp"
+        android:padding="2dp"
+        android:layout_marginLeft="20dp"
         />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/button_layout"
+        android:onClick="login"
+        android:padding="10dp"
+        android:text="LogIn"
+        android:textColor="#14ae4c" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:onClick="register"
+        android:id="@+id/register_layout"
+        android:layout_marginTop="10dp"
+        android:padding="3dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account?"
+        android:textSize="17sp"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Sign up."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
+    </LinearLayout>
     <com.wang.avi.AVLoadingIndicatorView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:indicatorName="BallClipRotatePulseIndicator"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal"
         style="@style/AVLoadingIndicatorView.Large"
         app:indicatorColor="#9e0b1f"
         android:id="@+id/progress"
         />
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Register"
-    android:id="@+id/register"
-    android:onClick="register"
-    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:background="#616161"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="20dp"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:textSize="24sp"
+                android:textColor="#000c58"
+                />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:background="#616161"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            />
+    </LinearLayout>
 </LinearLayout>

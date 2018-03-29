@@ -34,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     private String name,email,pass,confirmPass;
     private FirebaseAuth auth;
     private String gender="empty";
-    private Toolbar toolbar;
     private AVLoadingIndicatorView indicatorView;
     private DatabaseReference database;
     @Override
@@ -49,9 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
         button=(Button)findViewById(R.id.register);
         radioGroup = (RadioGroup) findViewById(R.id.gender);
         indicatorView= (AVLoadingIndicatorView) findViewById(R.id.progress);
-        toolbar=(Toolbar)findViewById(R.id.register_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Create New Account");
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
