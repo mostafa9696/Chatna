@@ -1,5 +1,6 @@
 package com.example.mostafahussien.chatna;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.w3c.dom.Text;
@@ -38,6 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Button changeImage,editProfile;
     private static final int GALLARY_PICKER=1;
     private StorageReference storageReference;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,10 @@ public class SettingsActivity extends AppCompatActivity {
                 gender=dataSnapshot.child("gender").getValue().toString();
                 userName.setText(name);
                 userStatus.setText(status);
+                if(image.equals("default"))
+                    Picasso.with(SettingsActivity.this).load(R.drawable.profileimage).into(imageView);
+                else
+                    Picasso.with(SettingsActivity.this).load(image).into(imageView);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -95,23 +102,37 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.activity(imageUri).
                     setAspectRatio(1,1).start(this);
         }
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){                // chosen image return to setting activity
             CropImage.ActivityResult result=CropImage.getActivityResult(data);
             if(resultCode==RESULT_OK){
+                progressDialog=new ProgressDialog(SettingsActivity.this);
+                progressDialog.setTitle("Uploading image ...");
+                progressDialog.setMessage("Please wait while finish uploading image.");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 Uri resultUri=result.getUri();
                 StorageReference filePath=storageReference.child("profile_images").child(userID + ".jpg");
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"Image updated successfuly",Toast.LENGTH_SHORT).show();
+                            String download_url=task.getResult().getDownloadUrl().toString();
+                            database.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(),"Image uploaded successfully !",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
 
                         } else {
                             Toast.makeText(getApplicationContext(),"Cannot Upload Image !",Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
-
             }
         }
     }

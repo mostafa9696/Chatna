@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -93,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                             HashMap<String,String>userMap=new HashMap<>();
                             userMap.put("name",name);
                             userMap.put("status","Hello I am using Chatna App");
-                            userMap.put("image","profileimage");
+                            userMap.put("image","default");
                             userMap.put("thumb_image","default");
                             userMap.put("gender",gender);
                             database.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -114,9 +117,22 @@ public class RegisterActivity extends AppCompatActivity {
 
                         } else {
                             indicatorView.hide();
-                            Toast.makeText(RegisterActivity.this, "Cannot sign in, Please try again !",
+                            String error="Cannot sign in, Please try again !";
+                            try{
+                                    throw task.getException();
+                            }catch (FirebaseAuthWeakPasswordException e){
+                                error="Please enter a strong password (more than 5 char)";
+                            } catch (FirebaseAuthInvalidCredentialsException e){
+                                error="Please enter a valid email";
+                            }
+                            catch (FirebaseAuthUserCollisionException e){
+                                error="This email was used before";
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(RegisterActivity.this, error,
                                     Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });

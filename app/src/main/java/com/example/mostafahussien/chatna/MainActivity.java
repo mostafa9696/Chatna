@@ -32,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Chatna");
         viewPager=(ViewPager)findViewById(R.id.main_tabPager);
         adapter=new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
         tabLayout=(TabLayout)findViewById(R.id.main_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.request_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.chat_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.users_selector_));
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
     }
 
     @Override
@@ -69,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
             startLoginScreen();
         }else if(id==R.id.acc_settings){
             Intent intent=new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+        } else if(id==R.id.users) {
+            Intent intent=new Intent(this,UsersActivity.class);
             startActivity(intent);
         }
         return true;

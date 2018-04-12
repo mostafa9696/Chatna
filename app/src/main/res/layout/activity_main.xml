@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,11 +7,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.mostafahussien.chatna.MainActivity"
     >
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appBar_main"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         >
         <include layout="@layout/app_bar_layout"
             android:id="@+id/main_toolbar">
@@ -27,21 +27,18 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:id="@+id/main_tabs"
-
             app:tabIndicatorHeight="4dp"
-
             app:tabPaddingStart="0dp"
             app:tabPaddingEnd="0dp"
-            >
-
-        </android.support.design.widget.TabLayout>
+            />
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/main_tabPager"
         android:layout_below="@+id/appBar_main"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
     </android.support.v4.view.ViewPager>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout >

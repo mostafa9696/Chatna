@@ -10,7 +10,7 @@
         android:radius="7dp"
         />
     <gradient
-            android:startColor="#46888f8c"
-            android:endColor="#46888f8c"
+            android:startColor="#40888f8c"
+            android:endColor="#40888f8c"
         />
 </shape>
