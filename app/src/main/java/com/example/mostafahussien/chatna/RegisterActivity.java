@@ -2,12 +2,14 @@ package com.example.mostafahussien.chatna;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.HashMap;
@@ -43,6 +46,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
         auth=FirebaseAuth.getInstance();
         userName=(EditText)findViewById(R.id.user_name);
         userPasssword=(EditText)findViewById(R.id.user_password);
@@ -83,8 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     public void registerUser(){
-        Log.e("ww2",email);
-        Log.e("ww2",pass);
+        button.setEnabled(false);
         auth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -92,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user=auth.getCurrentUser();
                             String userID=user.getUid();
+                            String deviceTokenID=FirebaseInstanceId.getInstance().getToken();
                             database=FirebaseDatabase.getInstance().getReference().child("users").child(userID);
                             HashMap<String,String>userMap=new HashMap<>();
                             userMap.put("name",name);
@@ -99,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userMap.put("image","default");
                             userMap.put("thumb_image","default");
                             userMap.put("gender",gender);
+                            userMap.put("device_token",deviceTokenID);
                             database.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -111,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         indicatorView.hide();
                                         Toast.makeText(RegisterActivity.this, "Cannot sign in, Please try again !",
                                                 Toast.LENGTH_SHORT).show();
+                                        button.setEnabled(true);
                                     }
                                 }
                             });
@@ -134,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, error,
                                     Toast.LENGTH_SHORT).show();
                         }
+                        button.setEnabled(true);
                     }
                 });
     }

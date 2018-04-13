@@ -6,44 +6,24 @@
     android:layout_height="match_parent"
     tools:context="com.example.mostafahussien.chatna.ProfileActivity"
     android:orientation="vertical"
-
     >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#79c6bd"
-        android:orientation="vertical"
-        android:paddingBottom="10dp">
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
             >
-            <Button
-                android:id="@+id/add_friend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:tag="send_request"
-                android:text="add friend"
-                android:onClick="addFriend"
-                />
-
-            <Button
-                android:id="@+id/decline_friend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/add_friend"
-                android:onClick="declineRequest"
-                android:tag="send_request"
-                android:text="decline request"
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:src="@drawable/chatimage"
+                android:scaleType="fitXY"
 
                 />
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
 
+                >
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_image"
             android:layout_width="150dp"
@@ -61,7 +41,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:text="user name"
-            android:textColor="#ffffff"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -72,14 +52,53 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="3dp"
             android:text="user status"
-            android:textColor="#565555"
+            android:textColor="#353434"
             android:textSize="18sp" />
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+
+            >
+            <Button
+                android:id="@+id/add_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:tag="send_request"
+                android:text="add friend"
+                android:onClick="addFriend"
+                android:background="@drawable/add_friend_layout"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:layout_marginRight="4dp"
+
+                />
+
+            <Button
+                android:id="@+id/decline_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/add_friend"
+                android:onClick="declineRequest"
+                android:tag="send_request"
+                android:text="decline request"
+                android:background="@drawable/decline_request_layout"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                />
+        </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10"
+
         >
         <Button
             android:layout_width="0dp"
