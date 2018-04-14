@@ -64,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
         imageView=(CircleImageView)findViewById(R.id.profile_image);
         changeImage=(Button)findViewById(R.id.change_image);
         editProfile=(Button)findViewById(R.id.change_status);
-
     }
 
     @Override
@@ -72,7 +71,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
         getUserData();
     }
-
+    /*@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.child("online").setValue(false);
+    }*/
     public void getUserData(){
         database.keepSynced(true); // save data (name,status, ... and any string,integer but not for image ) offline in cache
 

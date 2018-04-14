@@ -2,12 +2,19 @@ package com.example.mostafahussien.chatna;
 
 import android.app.Application;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 
 public class Chatna extends Application {
+    DatabaseReference database;
+    FirebaseAuth auth;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -20,5 +27,22 @@ public class Chatna extends Application {
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
+        auth=FirebaseAuth.getInstance();
+        if(auth.getCurrentUser() != null) {
+            database = FirebaseDatabase.getInstance().getReference().child("users").child(auth.getUid());
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        database.child("online").onDisconnect().setValue("false");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 }

@@ -25,7 +25,7 @@
         android:background="@drawable/edittext_layout"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
 
         >
         <EditText
@@ -150,4 +150,16 @@
             android:layout_marginLeft="5dp"
             />
     </LinearLayout>
+    <com.facebook.login.widget.LoginButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="9dp"
+        android:paddingTop="9dp"
+        android:paddingRight="11dp"
+        android:paddingLeft="11dp"
+        android:id="@+id/fb_login"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:onClick="FBlogin"
+        />
 </LinearLayout>

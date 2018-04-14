@@ -1,6 +1,7 @@
 package com.example.mostafahussien.chatna;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,12 @@ import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -22,11 +27,23 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
+    private boolean fromFacebook;
+    private DatabaseReference reference;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private FirebaseUser currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        prefs = getSharedPreferences("chatna_pref", MODE_PRIVATE);
+        editor = getSharedPreferences("chatna_pref", MODE_PRIVATE).edit();
+        fromFacebook = prefs.getBoolean("fromFace",false);
+        Log.e("ff2", String.valueOf(fromFacebook));
         mAuth=FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser()!=null) {
+            reference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
+        }
         toolbar=(Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Chatna");
@@ -39,18 +56,27 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        currentUser = mAuth.getCurrentUser();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // check if user is signed in (not-null) to update UI
-        FirebaseUser currentUser=mAuth.getCurrentUser();
         if(currentUser==null){
             startLoginScreen();
-        } else {
+        } else if(!fromFacebook){
+           reference.child("online").setValue("true");
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(currentUser != null&&fromFacebook==false) {
+            reference.child("online").setValue("false");
+        }
+    }
+
     public void startLoginScreen(){
         Intent intent=new Intent(this,LogInActivity.class);
         startActivity(intent);
@@ -68,9 +94,18 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         int id=item.getItemId();
         if(id==R.id.log_out){
-            mAuth.signOut();
+            if(fromFacebook){
+                LoginManager.getInstance().logOut();
+                mAuth.signOut();
+                editor.putBoolean("fromFace", false);
+                editor.apply();
+            } else {
+                reference.child("online").setValue("false");
+                mAuth.signOut();
+            }
+
             startLoginScreen();
-        }else if(id==R.id.acc_settings){
+        } else if(id==R.id.acc_settings){
             Intent intent=new Intent(this,SettingsActivity.class);
             startActivity(intent);
         } else if(id==R.id.users) {

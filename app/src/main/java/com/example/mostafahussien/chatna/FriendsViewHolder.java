@@ -10,21 +10,22 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Created by Mostafa Hussien on 14/04/2018.
+ */
 
-public class UsersViewHolder extends RecyclerView.ViewHolder {
+public class FriendsViewHolder extends RecyclerView.ViewHolder {
     View view;
-    public UsersViewHolder(View itemView) {
+    public FriendsViewHolder(View itemView) {
         super(itemView);
         view=itemView;
     }
-    public void setUserInfo(String name, String status, String image, Context context){
-
+    public void setFriendInfo(String name, String date, String image, Context context){
         TextView userName=(TextView)view.findViewById(R.id.row_user_name);
         userName.setText(name);
-        TextView userStatus=(TextView)view.findViewById(R.id.row_user_status);
-        userStatus.setText(status);
+        TextView friendDate=(TextView)view.findViewById(R.id.row_user_status);
+        friendDate.setText(date);
         CircleImageView imageView=(CircleImageView)view.findViewById(R.id.row_profile_image);
         Picasso.with(context).load(image).placeholder(R.drawable.profileimage).into(imageView);
     }
-
 }

@@ -69,12 +69,19 @@ public class ProfileActivity extends AppCompatActivity {
 
         friendRequestDB = FirebaseDatabase.getInstance().getReference().child("friends_req");
         friendDatabase = FirebaseDatabase.getInstance().getReference().child("friends");
-        rootRef = FirebaseDatabase.getInstance().getReference();
+
         notificationDB = FirebaseDatabase.getInstance().getReference().child("notifications");
         currentID = FirebaseAuth.getInstance().getCurrentUser();
         fillViews();
         checRequestkState();
     }
+    /*@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rootRef=FirebaseDatabase.getInstance().getReference().child("users").child(currentID.getUid());
+        rootRef.child("online").setValue(false);
+
+    }*/
 
     public void fillViews() {
         Log.e("bb6", String.valueOf(fromNotification));
@@ -213,11 +220,11 @@ public class ProfileActivity extends AppCompatActivity {
         // accept request case
         if (current_state.equals("req_received")) {
             final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
-            friendDatabase.child(currentID.getUid()).child(visitedUserID)
+            friendDatabase.child(currentID.getUid()).child(visitedUserID).child("date")
                     .setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    friendDatabase.child(visitedUserID).child(currentID.getUid())
+                    friendDatabase.child(visitedUserID).child(currentID.getUid()).child("date")
                             .setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

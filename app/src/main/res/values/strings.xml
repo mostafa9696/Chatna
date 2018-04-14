@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Chatna</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="facebook_app_id">224156871652388</string>
 </resources>
