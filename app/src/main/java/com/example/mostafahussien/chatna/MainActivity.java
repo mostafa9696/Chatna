@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import org.w3c.dom.Text;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private FirebaseUser currentUser;
+    private TextView toolbarText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
         prefs = getSharedPreferences("chatna_pref", MODE_PRIVATE);
         editor = getSharedPreferences("chatna_pref", MODE_PRIVATE).edit();
         fromFacebook = prefs.getBoolean("fromFace",false);
-        Log.e("ff2", String.valueOf(fromFacebook));
         mAuth=FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser()!=null) {
             reference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid());
         }
         toolbar=(Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Chatna");
+        toolbarText=(TextView)findViewById(R.id.toolbar_text);
+        toolbarText.setText("Chatna");
         viewPager=(ViewPager)findViewById(R.id.main_tabPager);
         adapter=new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout=(TabLayout)findViewById(R.id.main_tabs);
@@ -64,16 +66,16 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if(currentUser==null){
             startLoginScreen();
-        } else if(!fromFacebook){
-           reference.child("online").setValue("true");
+        }else if(fromFacebook==false){
+            reference.child("online").setValue("true");
         }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         if(currentUser != null&&fromFacebook==false) {
-            reference.child("online").setValue("false");
+            reference.child("online").setValue(ServerValue.TIMESTAMP);
         }
     }
 
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.putBoolean("fromFace", false);
                 editor.apply();
             } else {
-                reference.child("online").setValue("false");
+                reference.child("online").setValue(ServerValue.TIMESTAMP);
                 mAuth.signOut();
             }
 

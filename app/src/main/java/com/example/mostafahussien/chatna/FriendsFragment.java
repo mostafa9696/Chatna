@@ -1,6 +1,8 @@
 package com.example.mostafahussien.chatna;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -63,13 +65,18 @@ public class FriendsFragment extends Fragment {
             }
             @Override
             protected void onBindViewHolder(final FriendsViewHolder holder, int position, final friends model) {
-                String list_user_id=getRef(position).getKey();
+                final String list_user_id=getRef(position).getKey();
                 userDB.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String name=dataSnapshot.child("name").getValue().toString();
                         String thumb_image=dataSnapshot.child("thumb_image").getValue().toString();
+                        if(dataSnapshot.hasChild("online")) {
+                            String user_online = dataSnapshot.child("online").getValue().toString();
+                            holder.setUserOnline(user_online);
+                        }
                         holder.setFriendInfo(name, model.getDate(),thumb_image, getApplicationContext());
+                        handleClickEvent(holder,list_user_id,name);
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -82,6 +89,26 @@ public class FriendsFragment extends Fragment {
         Log.e("ww7", String.valueOf(adapter.getItemCount()));
         recyclerView.setAdapter(adapter);
     }
+    public void handleClickEvent(final FriendsViewHolder holder, final String list_user_id, final String name){
+        holder.viewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getContext(), ProfileActivity.class);
+                intent.putExtra("userID",list_user_id);
+                intent.putExtra("notfication",true);
+                startActivity(intent);
+            }
+        });
 
+        holder.userChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent chatIntent=new Intent(getContext(),ChatActiity.class);
+                chatIntent.putExtra("userID",list_user_id);
+                chatIntent.putExtra("userName",name);
+                startActivity(chatIntent);
+            }
+        });
+    }
 
 }

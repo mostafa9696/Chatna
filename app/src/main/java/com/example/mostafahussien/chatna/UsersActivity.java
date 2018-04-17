@@ -82,4 +82,9 @@ public class UsersActivity extends AppCompatActivity {
         adapter.startListening();
         recyclerView.setAdapter(adapter);
     }
+    /*@Override
+    protected void onDestroy() {
+        super.onDestroy();
+        databaseReference.child(currentID).child("online").setValue(false);
+    }*/
 }
