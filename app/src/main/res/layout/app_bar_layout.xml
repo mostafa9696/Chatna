@@ -33,7 +33,6 @@
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:layout_marginLeft="3dp"
-            android:text="user"
             />
             <TextView
                 android:layout_width="wrap_content"

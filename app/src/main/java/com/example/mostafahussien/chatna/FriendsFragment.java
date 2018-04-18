@@ -76,7 +76,7 @@ public class FriendsFragment extends Fragment {
                             holder.setUserOnline(user_online);
                         }
                         holder.setFriendInfo(name, model.getDate(),thumb_image, getApplicationContext());
-                        handleClickEvent(holder,list_user_id,name);
+                        handleClickEvent(holder,list_user_id,name,thumb_image);
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -89,7 +89,7 @@ public class FriendsFragment extends Fragment {
         Log.e("ww7", String.valueOf(adapter.getItemCount()));
         recyclerView.setAdapter(adapter);
     }
-    public void handleClickEvent(final FriendsViewHolder holder, final String list_user_id, final String name){
+    public void handleClickEvent(final FriendsViewHolder holder, final String list_user_id, final String name,final String imageUri){
         holder.viewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +106,7 @@ public class FriendsFragment extends Fragment {
                 Intent chatIntent=new Intent(getContext(),ChatActiity.class);
                 chatIntent.putExtra("userID",list_user_id);
                 chatIntent.putExtra("userName",name);
+                chatIntent.putExtra("image",imageUri);
                 startActivity(chatIntent);
             }
         });

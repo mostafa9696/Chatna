@@ -147,7 +147,6 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.e("kk2", String.valueOf(dataSnapshot.hasChild(visitedUserID)));
                 if (dataSnapshot.hasChild(visitedUserID)) {
                     String req_type = dataSnapshot.child(visitedUserID).child("request_type").getValue().toString();
-                    Log.e("kk2", req_type);
                     if (req_type.equals("received")) {
                         current_state = "req_received";
                         friendRequest.setText("Accept Friend Request");
@@ -188,20 +187,25 @@ public class ProfileActivity extends AppCompatActivity {
         friendRequest.setEnabled(false);
         // Not friend case ...
         if (current_state.equals("not_friend")) {
+            Log.e("kk2","req_sent1");
             friendRequestDB.child(currentID.getUid())
                     .child(visitedUserID).child("request_type").setValue("send").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
+                        Log.e("kk2","req_sent2");
                         friendRequestDB.child(visitedUserID).child(currentID.getUid())
                                 .child("request_type").setValue("received").addOnSuccessListener(new OnSuccessListener<Void>() {  // onSuccess listen only if above task is success but on Complete listen even success or failed
                             @Override
                             public void onSuccess(Void aVoid) {
                                 sendNotification();
+                                Log.e("kk2","req_sent3");
                                 friendRequest.setText("Cancel Friend Request");
                                 requestDecline.setVisibility(View.GONE);
                                 current_state = "req_sent";
                                 Toast.makeText(ProfileActivity.this, "Request send successfully ", Toast.LENGTH_LONG).show();
+                                Log.e("kk2","req_sent");
+
                             }
                         });
                     } else {
@@ -214,6 +218,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // cancel request case
         if (current_state.equals("req_sent")) {
+            Log.e("kk2","req_cancel");
             removeFriendRequest("not_friend", "Add Friend");
         }
 
@@ -228,6 +233,7 @@ public class ProfileActivity extends AppCompatActivity {
                             .setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            Log.e("kk2","req_acc");
                             removeFriendRequest("friends", "UnFriend");
                         }
                     });
@@ -243,6 +249,7 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             current_state = "not_friend";
+                            Log.e("kk2","unfriend");
                             friendRequest.setText("Add Friend");
                             requestDecline.setVisibility(View.GONE);
                             friendRequest.setEnabled(true);

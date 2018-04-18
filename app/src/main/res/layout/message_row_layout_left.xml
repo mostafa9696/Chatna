@@ -7,7 +7,7 @@
     android:padding="10dp"
     >
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/message_profile_layout"
+        android:id="@+id/left_message_profile_layout"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_weight="0"
@@ -16,23 +16,32 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cmv_backgroundColor="#88BABABA"
-        app:cmv_backgroundColorPressed="#FFBABABA"
-        app:cmv_cornerRadius="3dp"
+        app:cmv_backgroundColor="#83a6a6a6"
+        app:cmv_cornerRadius="6dp"
         app:cmv_arrowGravity="end"
         app:cmv_arrowPosition="left"
         app:cmv_showArrow="true"
         android:layout_marginLeft="10dp"
         >
         <TextView
-            android:id="@+id/message_text"
+            android:id="@+id/left_message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello"
-            android:textColor="#444444"
+            android:textColor="#3d3d3d"
+            android:textSize="17sp"
+            />
+        <TextView
+            android:id="@+id/left_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="#565656"
+            android:layout_below="@+id/left_message_text"
+            android:visibility="gone"
             />
         <ImageView
-            android:id="@+id/message_image_layout"
+            android:id="@+id/left_message_image_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop" />

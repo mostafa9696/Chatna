@@ -25,56 +25,69 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Mostafa Hussien on 17/04/2018.
  */
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Messages> messages;
-    private DatabaseReference reference;
     private FirebaseAuth auth;
-    public MessageAdapter(List<Messages> mMessageList) {
+    private String currentID,receiverImage;
+    private boolean sender=false;
+    public MessageAdapter(List<Messages> mMessageList,String receiverImageUri) {
         this.messages = mMessageList;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_row_layout, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.e("ww7", String.valueOf(messages.size()));
-        Messages message = messages.get(position);
-        String from_user = message.getFrom();
-        String message_type = message.getType();
         auth=FirebaseAuth.getInstance();
-        String currentID=auth.getCurrentUser().getUid();
-        if(from_user.equals(currentID)){
-            holder.messageText.setTextColor(Color.BLUE);
-        }else {
-            holder.messageText.setTextColor(Color.CYAN);
+        currentID=auth.getCurrentUser().getUid();
+        receiverImage=receiverImageUri;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        super.getItemViewType(position);
+        String userID=messages.get(position).getFrom().toString();
+        if(userID.equals(currentID)){           // sender case
+            return 1;
+        } else {             // receiver case
+            return 0;
         }
-        reference = FirebaseDatabase.getInstance().getReference().child("users").child(from_user);
+    }
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("thumb_image").getValue().toString();
-                //holder.displayName.setText(name);
-                Picasso.with(holder.profileImage.getContext()).load(image)
-                        .placeholder(R.drawable.profileimage).into(holder.profileImage);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        if (message_type.equals("text")) {
-            holder.messageText.setText(message.getMessage());
-            holder.messageImage.setVisibility(View.INVISIBLE);
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        if(viewType==1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_row_layout_right, parent, false);
+            return new RightViewHolder(view);
         } else {
-            Picasso.with(holder.profileImage.getContext()).load(message.getMessage())
-                    .placeholder(R.drawable.default_avatar).into(holder.messageImage);
-            holder.messageText.setVisibility(View.INVISIBLE);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_row_layout_left, parent, false);
+            return new LeftViewHolder(view);
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder  holder, int position) {
+
+        Messages message = messages.get(position);
+        String message_type = message.getType();
+        if(holder.getItemViewType()==1) {
+            RightViewHolder rightHolder = (RightViewHolder) holder;
+            if (message_type.equals("text")) {
+                rightHolder.messageText.setText(message.getMessage());
+                rightHolder.messageImage.setVisibility(View.INVISIBLE);
+            } else {
+                Picasso.with(rightHolder.messageImage.getContext()).load(message.getMessage())
+                        .placeholder(R.drawable.default_avatar).into(rightHolder.messageImage);
+                rightHolder.messageText.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            LeftViewHolder leftViewHolder = (LeftViewHolder) holder;
+            if (message_type.equals("text")) {
+                leftViewHolder.messageText.setText(message.getMessage());
+                leftViewHolder.messageImage.setVisibility(View.INVISIBLE);
+                Picasso.with(leftViewHolder.profileImage.getContext()).load(receiverImage)
+                        .placeholder(R.drawable.default_avatar).into(leftViewHolder.profileImage);
+            } else {
+                Picasso.with(leftViewHolder.messageImage.getContext()).load(message.getMessage())
+                        .placeholder(R.drawable.default_avatar).into(leftViewHolder.messageImage);
+                leftViewHolder.messageText.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -83,18 +96,26 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         return messages.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class LeftViewHolder extends RecyclerView.ViewHolder {
         public TextView messageText;
         public CircleImageView profileImage;
-        //public TextView displayName;
         public ImageView messageImage;
 
-        public ViewHolder(View itemView) {
+        public LeftViewHolder(View itemView) {
             super(itemView);
-            messageText = (TextView) itemView.findViewById(R.id.message_text);
-            profileImage = (CircleImageView) itemView.findViewById(R.id.message_profile_layout);
-            // displayName = (TextView) itemView.findViewById(R.id.name_text_layout);
-            messageImage = (ImageView) itemView.findViewById(R.id.message_image_layout);
+            messageText = (TextView) itemView.findViewById(R.id.left_message_text);
+            profileImage = (CircleImageView) itemView.findViewById(R.id.left_message_profile_layout);
+            messageImage = (ImageView) itemView.findViewById(R.id.left_message_image_layout);
+        }
+    }
+    public class RightViewHolder extends RecyclerView.ViewHolder {
+        public TextView messageText;
+        public ImageView messageImage;
+
+        public RightViewHolder(View itemView) {
+            super(itemView);
+            messageText = (TextView) itemView.findViewById(R.id.right_message_text);
+            messageImage = (ImageView) itemView.findViewById(R.id.right_message_image_layout);
         }
     }
 }
