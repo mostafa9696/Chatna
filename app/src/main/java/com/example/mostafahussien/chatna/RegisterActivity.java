@@ -106,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userMap.put("thumb_image","default");
                             userMap.put("gender",gender);
                             userMap.put("device_token",deviceTokenID);
+                            userMap.put("email",userEmail.getText().toString());
                             database.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

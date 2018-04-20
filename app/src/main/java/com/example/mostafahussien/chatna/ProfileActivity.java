@@ -92,8 +92,10 @@ public class ProfileActivity extends AppCompatActivity {
                     String display_name = dataSnapshot.child("name").getValue().toString();
                     String Ustatus = dataSnapshot.child("status").getValue().toString();
                     String image = dataSnapshot.child("image").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
                     userName.setText(display_name);
                     status.setText(Ustatus);
+                    userEmail.setText(email);
                     if (!image.equals("default")) {
                         Picasso.with(ProfileActivity.this).load(image).placeholder(R.drawable.profileimage).into(profileImage);
                     }
@@ -107,6 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             userName.setText(user.getName());
             status.setText(user.getStatus());
+            userEmail.setText(user.getEmail());
             if (!user.getImage().equals("default")) {
                 Picasso.with(ProfileActivity.this).load(user.getImage()).placeholder(R.drawable.profileimage).into(profileImage);
             }

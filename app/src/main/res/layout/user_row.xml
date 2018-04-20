@@ -47,8 +47,8 @@
             android:ellipsize="end"
             />
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:id="@+id/user_online"
                 android:src="@drawable/online_icon"
                 android:layout_gravity="bottom"

@@ -45,6 +45,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 public class LogInActivity extends AppCompatActivity {
@@ -54,7 +56,7 @@ public class LogInActivity extends AppCompatActivity {
     private EditText userMail, userPass;
     private AVLoadingIndicatorView indicatorView;
     private FirebaseAuth auth;
-    private TextView appName;
+    private TextView appName,forgetPasssword;
     private Typeface typeface;
     private DatabaseReference userDB;
     private CallbackManager callbackManager;
@@ -74,6 +76,7 @@ public class LogInActivity extends AppCompatActivity {
         userMail = (EditText) findViewById(R.id.user_login_mail);
         userPass = (EditText) findViewById(R.id.user_login_password);
         appName = (TextView) findViewById(R.id.tv_app_name);
+        forgetPasssword=(TextView)findViewById(R.id.forget_password);
         indicatorView = (AVLoadingIndicatorView) findViewById(R.id.progress);
         typeface = Typeface.createFromAsset(getAssets(), "Kurale-Regular.ttf");
         appName.setTypeface(typeface);
@@ -132,6 +135,7 @@ public class LogInActivity extends AppCompatActivity {
                                 userMap.put("thumb_image",String.valueOf(user.getPhotoUrl()));
                                 userMap.put("gender","male");
                                 userMap.put("device_token",deviceTokenID);
+                                userMap.put("email",user.getEmail());
                                 userDB.child(currentID).setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -216,5 +220,25 @@ public class LogInActivity extends AppCompatActivity {
 
     public void FBlogin(View view) {
         initFacebookLogin();
+    }
+
+    public void forgetPass(View view) {
+        indicatorView.show();
+        if (TextUtils.isEmpty(userMail.getText().toString())) {
+            Toast.makeText(getApplication(), "Enter your registered email.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseAuth.getInstance().sendPasswordResetEmail(userMail.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "New password was sent to your email", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                        }
+                        indicatorView.hide();
+                    }
+                });
     }
 }
