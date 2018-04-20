@@ -1,24 +1,27 @@
 package com.example.mostafahussien.chatna;
 
+import java.util.Map;
+
 /**
  * Created by Mostafa Hussien on 17/04/2018.
  */
 
 public class Messages {
     private String message, type;
-    private long  time;
+    private long time;
     private boolean seen;
     private String from;
-    public Messages(){
-
-    }
-
-    public Messages(String message, String type, long time, boolean seen) {
+    public Messages(String message, String type,long time, boolean seen, String from){
         this.message = message;
         this.type = type;
         this.time = time;
         this.seen = seen;
+        this.from=from;
     }
+    public Messages(){
+
+    }
+
     public Messages(String from) {
         this.from = from;
     }

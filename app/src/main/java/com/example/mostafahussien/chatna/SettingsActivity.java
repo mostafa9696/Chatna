@@ -145,7 +145,6 @@ public class SettingsActivity extends AppCompatActivity {
             if(resultCode==RESULT_OK){
                 showProgressDialog();
                 Uri resultUri=result.getUri();
-
                 final byte[]thumb_bytes=compressImage(resultUri);
                 StorageReference filePath=storageReference.child("profile_images").child(userID + ".jpg");
                 final StorageReference thumb_filePath=storageReference.child("profile_images").child("thumbs").child(userID + ".jpg");

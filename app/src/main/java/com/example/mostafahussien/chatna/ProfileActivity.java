@@ -84,7 +84,6 @@ public class ProfileActivity extends AppCompatActivity {
     }*/
 
     public void fillViews() {
-        Log.e("bb6", String.valueOf(fromNotification));
         if (fromNotification) {
             DatabaseReference mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(visitedUserID);
             mUsersDatabase.addValueEventListener(new ValueEventListener() {
@@ -233,7 +232,6 @@ public class ProfileActivity extends AppCompatActivity {
                             .setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Log.e("kk2","req_acc");
                             removeFriendRequest("friends", "UnFriend");
                         }
                     });

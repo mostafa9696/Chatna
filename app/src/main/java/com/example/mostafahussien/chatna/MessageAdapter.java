@@ -69,24 +69,26 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(holder.getItemViewType()==1) {
             RightViewHolder rightHolder = (RightViewHolder) holder;
             if (message_type.equals("text")) {
+                rightHolder.messageText.setVisibility(View.VISIBLE);
                 rightHolder.messageText.setText(message.getMessage());
-                rightHolder.messageImage.setVisibility(View.INVISIBLE);
+                rightHolder.messageImage.setVisibility(View.GONE);
             } else {
                 Picasso.with(rightHolder.messageImage.getContext()).load(message.getMessage())
                         .placeholder(R.drawable.default_avatar).into(rightHolder.messageImage);
-                rightHolder.messageText.setVisibility(View.INVISIBLE);
+                rightHolder.messageText.setVisibility(View.GONE);
+                rightHolder.messageImage.setVisibility(View.VISIBLE);
             }
         } else {
             LeftViewHolder leftViewHolder = (LeftViewHolder) holder;
             if (message_type.equals("text")) {
+                leftViewHolder.messageImage.setVisibility(View.GONE);
+                leftViewHolder.messageText.setVisibility(View.VISIBLE);
                 leftViewHolder.messageText.setText(message.getMessage());
-                leftViewHolder.messageImage.setVisibility(View.INVISIBLE);
-                Picasso.with(leftViewHolder.profileImage.getContext()).load(receiverImage)
-                        .placeholder(R.drawable.default_avatar).into(leftViewHolder.profileImage);
             } else {
                 Picasso.with(leftViewHolder.messageImage.getContext()).load(message.getMessage())
                         .placeholder(R.drawable.default_avatar).into(leftViewHolder.messageImage);
-                leftViewHolder.messageText.setVisibility(View.INVISIBLE);
+                leftViewHolder.messageText.setVisibility(View.GONE);
+                leftViewHolder.messageImage.setVisibility(View.VISIBLE);
             }
         }
     }

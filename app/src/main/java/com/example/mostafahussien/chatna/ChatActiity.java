@@ -1,6 +1,9 @@
 package com.example.mostafahussien.chatna;
 
+import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +56,8 @@ public class ChatActiity extends AppCompatActivity {
     private int itemPosition=0;
     private String lastRefreshedKey="empty";
     private String prevRefreshedKey="empty";
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +69,7 @@ public class ChatActiity extends AppCompatActivity {
         setSupportActionBar(chatToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         reference = FirebaseDatabase.getInstance().getReference();
+        storageReference= FirebaseStorage.getInstance().getReference();
         userName = (TextView) findViewById(R.id.toolbar_text);
         lastSeen = (TextView) findViewById(R.id.toolbar_lastSeen);
         lastSeen.setVisibility(View.VISIBLE);
@@ -222,8 +233,11 @@ public class ChatActiity extends AppCompatActivity {
     }
 
     public void clickAddBtn(View view) {
+        Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), 50);
     }
-
     public void clickSendMessage(View view) {
         String message = chatMessage.getText().toString();
         if (!TextUtils.isEmpty(message)) {
@@ -252,4 +266,65 @@ public class ChatActiity extends AppCompatActivity {
             });
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 50 && resultCode == RESULT_OK) {
+
+            Uri imageUri = data.getData();
+
+            final String current_user_ref = "Messages/" + senderUserID + "/" + receiverUserID;
+            final String chat_user_ref = "Messages/" + receiverUserID + "/" + senderUserID;
+
+            DatabaseReference user_message_push = reference.child("Messages")
+                    .child(senderUserID).child(receiverUserID).push();
+
+            final String push_id = user_message_push.getKey();
+
+
+            StorageReference filepath = storageReference.child("message_images").child(push_id + ".jpg");
+
+            filepath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                    if (task.isSuccessful()) {
+
+                        String download_url = task.getResult().getDownloadUrl().toString();
+
+
+                        Map messageMap = new HashMap();
+                        messageMap.put("message", download_url);
+                        messageMap.put("seen", false);
+                        messageMap.put("type", "image");
+                        messageMap.put("time", ServerValue.TIMESTAMP);
+                        messageMap.put("from", senderUserID);
+
+                        Map messageUserMap = new HashMap();
+                        messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
+                        messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+
+                        chatMessage.setText("");
+
+                        reference.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                if (databaseError != null) {
+
+                                    Log.d("CHAT_LOG", databaseError.getMessage().toString());
+
+                                }
+
+                            }
+                        });
+
+
+                    }
+
+                }
+            });
+        }
+        }
 }
