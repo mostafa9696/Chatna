@@ -1,4 +1,4 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Model;
 
 /**
  * Created by Mostafa Hussien on 20/04/2018.

@@ -1,18 +1,15 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,12 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mostafahussien.chatna.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +30,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,8 +40,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.wang.avi.AVLoadingIndicatorView;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -125,7 +119,7 @@ public class LogInActivity extends AppCompatActivity {
                             editor.putBoolean("fromFace", true);
                             editor.apply();
                             if(dataSnapshot.hasChild(currentID)){
-                                navigateToHomeScreen(true);
+                                navigateToHomeScreen();
                             } else {
                                 String deviceTokenID = FirebaseInstanceId.getInstance().getToken();
                                 HashMap<String,String> userMap=new HashMap<>();
@@ -191,7 +185,7 @@ public class LogInActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     indicatorView.hide();
                     currentID=auth.getCurrentUser().getUid();
-                    navigateToHomeScreen(false);
+                    navigateToHomeScreen();
 
                 } else {
                     indicatorView.hide();
@@ -201,7 +195,7 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
-    public void navigateToHomeScreen(final boolean fromFace){
+    public void navigateToHomeScreen(){
         String deviceTokenID = FirebaseInstanceId.getInstance().getToken();              // used for store it in DB to use in push notification and notification send to this token device id or other devices which user login his account on different devices
         userDB.child(currentID).child("device_token").setValue(deviceTokenID).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

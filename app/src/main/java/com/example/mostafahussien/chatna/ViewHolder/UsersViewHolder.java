@@ -1,4 +1,4 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.ViewHolder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,13 +6,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.mostafahussien.chatna.R;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UsersViewHolder extends RecyclerView.ViewHolder {
-    View view;
+    public View view;
     public UsersViewHolder(View itemView) {
         super(itemView);
         view=itemView;

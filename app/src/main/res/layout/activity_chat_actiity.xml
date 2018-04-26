@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mostafahussien.chatna.ChatActiity">
+    tools:context="com.example.mostafahussien.chatna.Activity.ChatActiity">
     <include layout="@layout/app_bar_layout"
         android:id="@+id/chat_appBar"
         />
@@ -39,17 +39,27 @@
         >
 
         <ImageButton
-            android:id="@+id/chat_add_btn"
+            android:id="@+id/chat_gallary_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:alpha="0.6"
             android:background="#fff"
-            android:padding="10dp"
-            app:srcCompat="@drawable/ic_add_black_24dp"
-            android:onClick="clickAddBtn"
+            android:layout_marginLeft="2dp"
+            app:srcCompat="@drawable/galleryicon"
+            android:onClick="clickGallaryBtn"
             />
-
+        <ImageButton
+            android:id="@+id/chat_camera_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:alpha="0.6"
+            android:background="#fff"
+            android:padding="1dp"
+            app:srcCompat="@drawable/cam"
+            android:onClick="clickCameraBtn"
+            />
         <EditText
             android:id="@+id/chat_message_view"
             android:layout_width="wrap_content"

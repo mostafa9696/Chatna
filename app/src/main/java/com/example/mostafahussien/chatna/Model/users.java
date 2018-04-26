@@ -1,4 +1,4 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

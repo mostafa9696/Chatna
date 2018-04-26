@@ -1,4 +1,4 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.ViewHolder;
 
 import android.content.Context;
 import android.media.Image;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mostafahussien.chatna.R;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -18,7 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendsViewHolder extends RecyclerView.ViewHolder {
     View view;
-    ImageView viewProfile,userChat;
+    public ImageView viewProfile,userChat;
     public FriendsViewHolder(View itemView) {
         super(itemView);
         view=itemView;

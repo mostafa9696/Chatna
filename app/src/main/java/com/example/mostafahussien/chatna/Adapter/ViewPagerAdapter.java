@@ -1,11 +1,15 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.mostafahussien.chatna.Fragment.ChatsFragment;
+import com.example.mostafahussien.chatna.Fragment.FriendsFragment;
+import com.example.mostafahussien.chatna.Fragment.RequestsFragment;
 
-class ViewPagerAdapter extends FragmentPagerAdapter{
+
+public class ViewPagerAdapter extends FragmentPagerAdapter{
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }

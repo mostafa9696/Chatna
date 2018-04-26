@@ -1,4 +1,4 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,21 +6,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
+import com.example.mostafahussien.chatna.R;
+import com.example.mostafahussien.chatna.Adapter.ViewPagerAdapter;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;

@@ -1,4 +1,4 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Fragment;
 
 
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mostafahussien.chatna.Activity.ChatActiity;
+import com.example.mostafahussien.chatna.Model.Conv;
+import com.example.mostafahussien.chatna.ViewHolder.ConvViewHolder;
+import com.example.mostafahussien.chatna.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;

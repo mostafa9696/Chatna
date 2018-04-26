@@ -1,9 +1,15 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Activity;
 
+import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +24,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mostafahussien.chatna.Adapter.MessageAdapter;
+import com.example.mostafahussien.chatna.BuildConfig;
+import com.example.mostafahussien.chatna.Model.Messages;
+import com.example.mostafahussien.chatna.R;
+import com.example.mostafahussien.chatna.TimeUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,9 +44,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ChatActiity extends AppCompatActivity {
@@ -45,23 +61,23 @@ public class ChatActiity extends AppCompatActivity {
     private ImageView userImage;
     private DatabaseReference reference,messsageDB;
     private FirebaseAuth auth;
-    private ImageButton chatAddBtn, chatSendBtn;
+    private ImageButton gallaryBtn, chatSendBtn,cameraBtn ;
     private EditText chatMessage;
     private RecyclerView messagesList;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout refreshLayout;
     private List<Messages> messagess;
     private MessageAdapter adapter;
-    private int currentMessagesPage=1;
-    private int itemPosition=0;
-    private String lastRefreshedKey="empty";
-    private String prevRefreshedKey="empty";
+    private int currentMessagesPage=1,itemPosition=0;
+    private String lastRefreshedKey="empty",prevRefreshedKey="empty";
     private StorageReference storageReference;
-
+    private Uri pathUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_actiity);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         receiverUserID = getIntent().getStringExtra("userID");
         receiverName = getIntent().getStringExtra("userName");
         receiverImageUri=getIntent().getStringExtra("image");
@@ -78,7 +94,8 @@ public class ChatActiity extends AppCompatActivity {
         userImage.setImageResource(R.drawable.ic_chat_toolbar);
         auth = FirebaseAuth.getInstance();
         senderUserID = auth.getCurrentUser().getUid();
-        chatAddBtn = (ImageButton) findViewById(R.id.chat_add_btn);
+        gallaryBtn = (ImageButton) findViewById(R.id.chat_gallary_btn);
+        cameraBtn= (ImageButton) findViewById(R.id.chat_camera_btn);
         chatSendBtn = (ImageButton) findViewById(R.id.chat_send_btn);
         chatMessage = (EditText) findViewById(R.id.chat_message_view);
         refreshLayout=(SwipeRefreshLayout)findViewById(R.id.message_swipe_layout);
@@ -232,12 +249,6 @@ public class ChatActiity extends AppCompatActivity {
         });
     }
 
-    public void clickAddBtn(View view) {
-        Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), 50);
-    }
     public void clickSendMessage(View view) {
         String message = chatMessage.getText().toString();
         if (!TextUtils.isEmpty(message)) {
@@ -271,20 +282,20 @@ public class ChatActiity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 50 && resultCode == RESULT_OK) {
-
             Uri imageUri = data.getData();
-
+            sendImage(imageUri);
+        } else if(requestCode==100&&resultCode==RESULT_OK){
+            sendImage(pathUri);
+        }
+        }
+        public void sendImage(Uri imageUri){
             final String current_user_ref = "Messages/" + senderUserID + "/" + receiverUserID;
             final String chat_user_ref = "Messages/" + receiverUserID + "/" + senderUserID;
 
             DatabaseReference user_message_push = reference.child("Messages")
                     .child(senderUserID).child(receiverUserID).push();
-
             final String push_id = user_message_push.getKey();
-
-
             StorageReference filepath = storageReference.child("message_images").child(push_id + ".jpg");
-
             filepath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -292,8 +303,6 @@ public class ChatActiity extends AppCompatActivity {
                     if (task.isSuccessful()) {
 
                         String download_url = task.getResult().getDownloadUrl().toString();
-
-
                         Map messageMap = new HashMap();
                         messageMap.put("message", download_url);
                         messageMap.put("seen", false);
@@ -304,27 +313,50 @@ public class ChatActiity extends AppCompatActivity {
                         Map messageUserMap = new HashMap();
                         messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
                         messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
-
                         chatMessage.setText("");
-
                         reference.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
                                 if (databaseError != null) {
-
                                     Log.d("CHAT_LOG", databaseError.getMessage().toString());
-
                                 }
-
                             }
                         });
-
-
                     }
-
                 }
             });
         }
+
+    public void clickGallaryBtn(View view) {
+        Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), 50);
+    }
+    public void clickCameraBtn(View view) {     // todo : test camera
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //fileUri =getOutputMediaFileUri(this);//get fileUri from CameraUtils
+        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Chatna");
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d("tt3", "failed to create directory");
         }
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String picName="Image_"+timeStamp+".jpg";
+        File imageFile=new File(mediaStorageDir+ File.separator +picName);
+        pathUri = FileProvider.getUriForFile(ChatActiity.this, "com.example.mostafahussien", imageFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, pathUri);
+        startActivityForResult(intent,100);
+    }
+
+    /*public Uri getOutputMediaFileUri(Context context) {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        File imagesFolder = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Chatna");
+        imagesFolder.mkdirs();
+        File image = new File(imagesFolder, "Image" + timeStamp + ".jpg");
+        Uri uriSavedImage = Uri.fromFile(image);
+        Uri uriSavedImage = FileProvider.getUriForFile(ChatActiity.this, BuildConfig.APPLICATION_ID + ".provider",image);
+
+        return uriSavedImage;
+    }*/
 }

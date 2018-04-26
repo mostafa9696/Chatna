@@ -38,8 +38,10 @@
             />
         <ImageView
             android:id="@+id/right_message_image_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop" />
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            />
     </me.himanshusoni.chatmessageview.ChatMessageView>
 </LinearLayout>

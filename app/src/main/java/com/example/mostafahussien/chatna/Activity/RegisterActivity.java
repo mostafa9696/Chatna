@@ -1,13 +1,11 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,8 +13,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
+import com.example.mostafahussien.chatna.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -75,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
         email=userEmail.getText().toString();
         pass=userPasssword.getText().toString();
         confirmPass=userConfirmPassword.getText().toString();
-        Log.e("cc5", gender);
         if(TextUtils.isEmpty(name)||TextUtils.isEmpty(email)||TextUtils.isEmpty(pass)||gender.equals("empty")){
             Toast.makeText(getApplicationContext(),"Please filled above data!",Toast.LENGTH_LONG).show();
         }

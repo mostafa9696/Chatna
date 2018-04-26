@@ -1,18 +1,19 @@
-package com.example.mostafahussien.chatna;
+package com.example.mostafahussien.chatna.Fragment;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mostafahussien.chatna.Activity.ChatActiity;
+import com.example.mostafahussien.chatna.Activity.ProfileActivity;
+import com.example.mostafahussien.chatna.ViewHolder.FriendsViewHolder;
+import com.example.mostafahussien.chatna.R;
+import com.example.mostafahussien.chatna.Model.friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,7 +87,6 @@ public class FriendsFragment extends Fragment {
             }
         };
         adapter.startListening();
-        Log.e("ww7", String.valueOf(adapter.getItemCount()));
         recyclerView.setAdapter(adapter);
     }
     public void handleClickEvent(final FriendsViewHolder holder, final String list_user_id, final String name,final String imageUri){
