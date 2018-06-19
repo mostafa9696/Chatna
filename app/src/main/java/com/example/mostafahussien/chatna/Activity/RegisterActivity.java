@@ -76,8 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(name)||TextUtils.isEmpty(email)||TextUtils.isEmpty(pass)||gender.equals("empty")){
             Toast.makeText(getApplicationContext(),"Please filled above data!",Toast.LENGTH_LONG).show();
         }
-        //if(!pass.equals(confirmPass))                         // unComment it last after testing
-        else  if(false)
+        else if(!pass.equals(confirmPass))
         {
             Toast.makeText(getApplicationContext(),"Pssword not match Confirm Password !",Toast.LENGTH_LONG).show();
         }else {

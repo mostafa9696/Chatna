@@ -81,6 +81,7 @@ public class ChatActiity extends AppCompatActivity {
         receiverUserID = getIntent().getStringExtra("userID");
         receiverName = getIntent().getStringExtra("userName");
         receiverImageUri=getIntent().getStringExtra("image");
+        Log.e("ss8s", receiverName );
         chatToolbar = (Toolbar) findViewById(R.id.chat_appBar);
         setSupportActionBar(chatToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -338,7 +339,7 @@ public class ChatActiity extends AppCompatActivity {
         //fileUri =getOutputMediaFileUri(this);//get fileUri from CameraUtils
         File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Chatna");
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d("tt3", "failed to create directory");
+            Log.d("CHAT-LOG", "failed to create directory");
         }
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String picName="Image_"+timeStamp+".jpg";
@@ -348,15 +349,4 @@ public class ChatActiity extends AppCompatActivity {
         startActivityForResult(intent,100);
     }
 
-    /*public Uri getOutputMediaFileUri(Context context) {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        File imagesFolder = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Chatna");
-        imagesFolder.mkdirs();
-        File image = new File(imagesFolder, "Image" + timeStamp + ".jpg");
-        Uri uriSavedImage = Uri.fromFile(image);
-        Uri uriSavedImage = FileProvider.getUriForFile(ChatActiity.this, BuildConfig.APPLICATION_ID + ".provider",image);
-
-        return uriSavedImage;
-    }*/
 }

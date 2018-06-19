@@ -25,7 +25,7 @@ public class UsersViewHolder extends RecyclerView.ViewHolder {
         TextView userStatus=(TextView)view.findViewById(R.id.row_user_status);
         userStatus.setText(status);
         CircleImageView imageView=(CircleImageView)view.findViewById(R.id.row_profile_image);
-        Picasso.with(context).load(image).placeholder(R.drawable.profileimage).into(imageView);
+        Picasso.with(context).load(image).fit().placeholder(R.drawable.profileimage).into(imageView);
     }
 
 }

@@ -34,7 +34,7 @@ public class FriendsViewHolder extends RecyclerView.ViewHolder {
         TextView friendDate=(TextView)view.findViewById(R.id.row_user_status);
         friendDate.setText(date);
         CircleImageView imageView=(CircleImageView)view.findViewById(R.id.row_profile_image);
-        Picasso.with(context).load(image).placeholder(R.drawable.profileimage).into(imageView);
+        Picasso.with(context).load(image).fit().placeholder(R.drawable.profileimage).into(imageView);
     }
     public void setUserOnline(String isOnline){
         ImageView onlineView=(ImageView)view.findViewById(R.id.user_online);

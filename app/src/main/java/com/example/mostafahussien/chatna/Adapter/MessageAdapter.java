@@ -68,7 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 rightHolder.messageText.setText(message.getMessage());
                 rightHolder.messageImage.setVisibility(View.GONE);
             } else {
-                Picasso.with(rightHolder.messageImage.getContext()).load(message.getMessage())
+                Picasso.with(rightHolder.messageImage.getContext()).load(message.getMessage()).fit()
                         .placeholder(R.drawable.default_avatar).into(rightHolder.messageImage);
                 rightHolder.messageText.setVisibility(View.GONE);
                 rightHolder.messageImage.setVisibility(View.VISIBLE);
@@ -80,7 +80,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 leftViewHolder.messageText.setVisibility(View.VISIBLE);
                 leftViewHolder.messageText.setText(message.getMessage());
             } else {
-                Picasso.with(leftViewHolder.messageImage.getContext()).load(message.getMessage())
+                Picasso.with(leftViewHolder.messageImage.getContext()).load(message.getMessage()).fit()
                         .placeholder(R.drawable.default_avatar).into(leftViewHolder.messageImage);
                 leftViewHolder.messageText.setVisibility(View.GONE);
                 leftViewHolder.messageImage.setVisibility(View.VISIBLE);

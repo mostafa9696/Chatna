@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +34,7 @@ public class ChatsFragment extends Fragment {
     private DatabaseReference convDB;
     private DatabaseReference messageDB;
     private DatabaseReference usersDB;
-
     private FirebaseAuth auth;
-    private String userOnline,userName,userImage;
     private String currentUserID,lastMsg;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +50,6 @@ public class ChatsFragment extends Fragment {
         convDB.keepSynced(true);
         usersDB = FirebaseDatabase.getInstance().getReference().child("users");
         messageDB = FirebaseDatabase.getInstance().getReference().child("Messages").child(currentUserID);
-        usersDB.keepSynced(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         convList.setLayoutManager(linearLayoutManager);
@@ -61,16 +59,23 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Query query=convDB.orderByChild("timestamp");
+        Query query=convDB;
         FirebaseRecyclerOptions<Conv> options =
                 new FirebaseRecyclerOptions.Builder<Conv>()
                         .setQuery(query, Conv.class)
                         .build();
         FirebaseRecyclerAdapter<Conv,ConvViewHolder> adapter=new FirebaseRecyclerAdapter<Conv, ConvViewHolder> (options) {
+
+            @Override
+            public ConvViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.user_row, parent, false);
+                return new ConvViewHolder(view);
+            }
             @Override
             protected void onBindViewHolder(final ConvViewHolder holder, int position, final Conv model) {
                 final String bindedUserID = getRef(position).getKey();
-                lastMsg="";
+                /*lastMsg="";
                 Query lastMessageQuery = messageDB.child(bindedUserID).limitToLast(1);
                 lastMessageQuery.addChildEventListener(new ChildEventListener() {
                     @Override
@@ -94,14 +99,15 @@ public class ChatsFragment extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                });*/
+
                 usersDB.child(bindedUserID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        userName = dataSnapshot.child("name").getValue().toString();
-                        userImage = dataSnapshot.child("thumb_image").getValue().toString();
-
+                        final String userName = dataSnapshot.child("name").getValue().toString();
+                        final String userImage = dataSnapshot.child("thumb_image").getValue().toString();
+                        String userOnline = "offline";
                         if(dataSnapshot.hasChild("online")) {
                             userOnline = dataSnapshot.child("online").getValue().toString();
                         }
@@ -122,12 +128,6 @@ public class ChatsFragment extends Fragment {
 
                     }
                 });
-            }
-            @Override
-            public ConvViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.user_row, parent, false);
-                return new ConvViewHolder(view);
             }
         };
         adapter.startListening();

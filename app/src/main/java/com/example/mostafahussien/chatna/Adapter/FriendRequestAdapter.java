@@ -39,7 +39,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final users user=usersList.get(position);
         holder.userName.setText(user.getName());
-        Picasso.with(context).load(user.getImage()).placeholder(R.drawable.profileimage).into(holder.userImage);
+        Picasso.with(context).load(user.getImage()).fit().placeholder(R.drawable.profileimage).into(holder.userImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
